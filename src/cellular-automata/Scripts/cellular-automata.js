@@ -9,8 +9,8 @@ function CellularAutomata(n) {
   // Fill in the CA rules
   Array(8).fill(0)
     .map((num, index) => { return Utils.ConvertIntToBinArray([0, 0, 0], index, 0) })
-    .reduce((memo, binArray, binArrayIndex) => {
-      memo[binArray] = _ruleBinArray[binArrayIndex] === 1
+      .reduce((memo, binArray, binArrayIndex) => {
+          memo[binArray] = _ruleBinArray[_ruleBinArray.length - binArrayIndex - 1] === 1
       return memo
     }, _rules)
 
