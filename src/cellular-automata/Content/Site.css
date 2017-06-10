@@ -23,7 +23,7 @@ textarea {
     max-width: 280px;
 }
 #sim-table {
-    font-family: monospace;
+    font-family: 'Cutive Mono', Courier, monospace;
     font-weight: 700;
     font-size: 8px;
     letter-spacing: 0;
