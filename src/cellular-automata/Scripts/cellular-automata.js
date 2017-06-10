@@ -3,29 +3,25 @@
 function CellularAutomata(n) {
   const _rules = {}
 
-  // Convert a number to binary represented by an array.
-  let _convertToBinArray = function _convertToBinArray(ar, remainder, index) {
-    if (index === ar.length) return ar
-    let powerOfTwo = Math.pow(2, ar.length - index - 1)
-    ar[index] = remainder >= powerOfTwo ? 1 : 0
-    return _convertToBinArray(ar, remainder >= powerOfTwo ? remainder - powerOfTwo : remainder, index + 1)
-  }
-
   // An eight bit array representing the rule integer in binary
-  let _ruleBinArray = _convertToBinArray(Array(8).fill(0), n, 0)
+  let _ruleBinArray = Utils.ConvertIntToBinArray(Array(8).fill(0), n, 0)
 
   // Fill in the CA rules
   Array(8).fill(0)
-    .map((num, index) => {
-      return _convertToBinArray([0, 0, 0], index, 0)
-    }) // [ [0,0,0], [0,0,1], ... ]
+    .map((num, index) => { return Utils.ConvertIntToBinArray([0, 0, 0], index, 0) })
     .reduce((memo, binArray, binArrayIndex) => {
       memo[binArray] = _ruleBinArray[binArrayIndex] === 1
       return memo
     }, _rules)
 
+  // Check a given array against the rule set.
   this.Check = function Check(ar) {
     if (ar.length !== 3) throw new Error("Array must have three indices to be checked.")
     return _rules[ar]
+  }
+
+  // Return a copy of the rule object being used.
+  this.RuleSet = function () {
+    return Utils.Copy(_rules)
   }
 }
