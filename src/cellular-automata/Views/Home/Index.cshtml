@@ -3,12 +3,12 @@
 }
 
 <div class="container">
-    <div class="col-md-8">
+    <div class="col-md-12">
         <form class="form" id="ca-configurator">
             <div class="panel panel-default">
                 <div class="panel-heading"><strong>CA Configurator</strong></div>
                 <div class="panel-body">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="on">"On" character</label>
                             <input class="form-control" id="on" type="text" value="&amp;lhblk;" />
@@ -22,7 +22,7 @@
                             <input class="form-control" id="rule" type="number" value="18" min="1" max="256" />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="width">Width</label>
                             <input class="form-control" id="width" type="number" value="514" />
@@ -38,7 +38,14 @@
                             <input class="form-control" id="initial" type="text" value="256" />
                         </div>
                     </div>
-
+                    <div class="col-md-4">
+                        <table class="table table-hover" id="rules-table">
+                            <tr>
+                                <th>Pattern</th>
+                                <th>New State</th>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
                 <div class="panel-footer">
                     <button class="btn btn-primary" type="submit">Generate</button>

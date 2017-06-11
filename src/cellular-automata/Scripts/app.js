@@ -15,5 +15,13 @@
         const grid = new CAGrid(width, generations, ruleNum, initial)
 
         $('#sim-table').html(grid.GridText(offChar, onChar))
+        $('.rule-row').remove()
+        Object.keys(grid.Rule).forEach(ruleKey => {
+            $('#rules-table').append(
+                $('<tr />', { class: 'rule-row' })
+                    .append($('<td />', { text: ruleKey.replace(/,/g, '') }))
+                    .append($('<td />', { text: grid.Rule[ruleKey]? '1': '0' }))
+            )
+        })
     })
 })
