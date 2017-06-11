@@ -1,18 +1,12 @@
 ﻿// Construct a RowManager instance with the specified number of cells.
-function CAGrid(width, height, rule) {
-    console.log(arguments)
+function CAGrid(width, height, rule, intial) {
+  
   const grid = [Array(width).fill(0)]
   const ca = new CellularAutomata(rule)
-  grid[0][width - 1] = 1
+
+  intial.forEach(val => { if (val > -1 && val < width) grid[0][val] = 1 })
   for (let i = 1; i < height; i++) {
-    grid.push( grid[i - 1]
-      .map((cell, index, ar) => {
-        let checkRow
-        if (index === 0) checkRow = [0, cell, ar[index + 1]]
-        else if (index === ar.length - 1) checkRow = [0, cell, ar[index + 1]]
-        else checkRow = [ar[index - 1], cell, ar[index + 1]]
-        return ca.Check(checkRow)? 1: 0
-      }))
+      grid.push(ca.EvolveRow(grid[i - 1]))
   }
   this.Grid = function () {
     return grid

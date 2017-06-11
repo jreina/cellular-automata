@@ -24,4 +24,14 @@ function CellularAutomata(n) {
   this.RuleSet = function () {
     return Utils.Copy(_rules)
   }
+
+  this.EvolveRow = function(row) {
+      return row.map((cell, index, ar) => {
+          let checkRow
+          if (index === 0) checkRow = [0, cell, ar[index + 1]]
+          else if (index === ar.length - 1) checkRow = [0, cell, ar[index + 1]]
+          else checkRow = [ar[index - 1], cell, ar[index + 1]]
+          return this.Check(checkRow) ? 1 : 0
+      })
+  }
 }

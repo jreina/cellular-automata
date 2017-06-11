@@ -25,6 +25,7 @@ textarea {
 #sim-table {
     font-family: 'Cutive Mono', Courier, monospace;
     font-weight: 700;
-    font-size: 4px;
+    font-size: 2px;
     letter-spacing: 0;
+    line-height: 2px;
 }
