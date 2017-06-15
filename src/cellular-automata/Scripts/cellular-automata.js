@@ -9,8 +9,8 @@ function CellularAutomata(n) {
   // Fill in the CA rules
   Array(8).fill(0)
     .map((num, index) => { return Utils.ConvertIntToBinArray([0, 0, 0], index, 0) })
-      .reduce((memo, binArray, binArrayIndex) => {
-          memo[binArray] = _ruleBinArray[_ruleBinArray.length - binArrayIndex - 1] === 1
+    .reduce((memo, binArray, binArrayIndex) => {
+      memo[binArray] = _ruleBinArray[_ruleBinArray.length - binArrayIndex - 1] === 1
       return memo
     }, _rules)
 
@@ -27,11 +27,11 @@ function CellularAutomata(n) {
 
   this.EvolveRow = function(row) {
       return row.map((cell, index, ar) => {
-          let checkRow
-          if (index === 0) checkRow = [0, cell, ar[index + 1]]
-          else if (index === ar.length - 1) checkRow = [0, cell, ar[index + 1]]
-          else checkRow = [ar[index - 1], cell, ar[index + 1]]
-          return this.Check(checkRow) ? 1 : 0
+        let checkRow
+        if (index === 0) checkRow = [ar[ar.length - 1], cell, ar[index + 1]]
+        else if (index === ar.length - 1) checkRow = [ar[index - 1], cell, ar[0]]
+        else checkRow = [ar[index - 1], cell, ar[index + 1]]
+        return this.Check(checkRow) ? 1 : 0
       })
   }
 }
