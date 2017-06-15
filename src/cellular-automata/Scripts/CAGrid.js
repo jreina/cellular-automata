@@ -5,14 +5,18 @@ function CAGrid(width, height, rule, intial, off, on) {
   const ca = new CellularAutomata(rule)
   let offChar = off || '#';
   let onChar = on || '_';
-  let gridString = '';
+  
   const initial = Array(width).fill(0)
   intial.forEach(val => { if (val > -1 && val < width) initial[val] = 1 })
+  
   let currentRow = initial
+  const rowtoString = row => row.map(cell => cell === 1 ? onChar : offChar).join('') + '<br />'
+
+  let gridString = rowtoString(initial)
 
   for (let i = 1; i < height; i++) {
     let newRow = ca.EvolveRow(currentRow)
-    gridString += newRow.map(cell => cell === 1 ? onChar : offChar).join('') + '<br />'
+    gridString += rowtoString(newRow)
     currentRow = newRow
   }
   this.Grid = function () {
