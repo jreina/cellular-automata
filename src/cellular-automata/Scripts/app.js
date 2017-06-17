@@ -25,10 +25,19 @@
     let canvas = $('#sim-canvas')
 
     let context = canvas.get(0).getContext('2d')
+
+    // Format canvas
     canvas.attr({ height: generations, width: width })
-    canvas.css({ 'background-color': offColor })
+
+    // Fill canvas with "off" color
+    context.fillStyle = offColor
+    context.fillRect(0, 0, width, generations)
+
+    // Set canvas "on" color
     context.fillStyle = onColor
     context.webkitImageSmoothingEnabled = false
+
+    // Draw CA
     grid.DrawGrid(context)
 
     $('.rule-row').remove()
