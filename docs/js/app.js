@@ -1,51 +1,88 @@
 ﻿$(function() {
-  // Set up tooltip
+  const bucket = arr => discriminator =>
+    arr.reduce(
+      (memo, val) => {
+        if (discriminator(val)) memo[0].push(val);
+        else memo[1].push(val);
 
-  $('#ca-configurator').on('submit', function(event) {
-    event.preventDefault()
-    let form = event.target
-    let onColor = form.on.value
-    let offColor = form.off.value
-    let ruleNum = Number.parseInt(form.rule.value)
-    let width = Number.parseInt(form.width.value)
-    let generations = Number.parseInt(form.generations.value)
-    let initial = form.initial.value.split(',').reduce((memo, val) => {
-      if (val.indexOf('..') !== -1) {
-        let params = val.split('..').map(param => Number.parseInt(param))
-        if (params.length !== 2) throw new Error('Syntax error near ' + val)
-        for (let i = params[0]; i <= params[1]; i++) memo.push(i)
-      } else memo.push(Number.parseInt(val))
-      return memo
-    }, [])
+        return memo;
+      },
+      [[], []]
+    );
+  const getRangeIndices = rangeString =>
+    rangeString
+      // ['0..10','100..150']
+      .map(range => range.split(".."))
+      // [['0','10'],['100','150']]
+      .map(range => range.map(Number.parseInt))
+      // [[0,10],[100,150]]
+      .map(range => {
+        const [start, end] = range;
+        const length = end - start;
+        return Array(length)
+          .fill(0)
+          .map((v, index) => index)
+          .map(value => value + start);
+      });
+  const setInitialValues = arr => indices =>
+    arr.map(value => (indices.includes(value) ? 1 : 0));
+  const mapInitialValues = (width, inputString) => {
+    const ivArray = inputString.split(",");
+    const [singles, ranges] = bucket(ivArray)(val => val.indexOf("..") === -1);
+    const rangeCells = getRangeIndices(ranges);
+    const singleCells = singles.map(Number.parseInt);
+    const ivs = rangeCells.concat(singleCells);
+    const numberedAr = Array(width)
+      .fill(0)
+      .map((v, index) => index);
+    const initial = setInitialValues(numberedAr)(ivs);
+    return initial;
+  };
 
-    const grid = new CAGrid(width, generations, ruleNum, initial)
+  $("#ca-configurator").on("submit", function(event) {
+    event.preventDefault();
+    let {
+      on,
+      off,
+      rule,
+      cawidth,
+      generations,
+      initial,
+      cellsize
+    } = event.target;
+    let onColor = on.value;
+    let offColor = off.value;
+    const ruleNum = Number.parseInt(rule.value);
+    const width = Number.parseInt(cawidth.value);
+    const height = Number.parseInt(generations.value);
+    const cellSize = Number.parseInt(cellsize.value);
+    const initialState = mapInitialValues(width, initial.value);
+    const grid = new CAGrid(width, height, ruleNum, initialState, cellSize);
 
-    // $('#sim-table').html(grid.GridString)
-    let canvas = $('#sim-canvas')
-
-    let context = canvas.get(0).getContext('2d')
+    let canvas = $("#sim-canvas");
+    let context = canvas.get(0).getContext("2d");
 
     // Format canvas
-    canvas.attr({ height: generations, width: width })
+    canvas.attr({ height: height * cellSize, width: width * cellSize });
 
     // Fill canvas with "off" color
-    context.fillStyle = offColor
-    context.fillRect(0, 0, width, generations)
+    context.fillStyle = offColor;
+    context.fillRect(0, 0, width * cellSize, height * cellSize);
 
     // Set canvas "on" color
-    context.fillStyle = onColor
-    context.webkitImageSmoothingEnabled = false
+    context.fillStyle = onColor;
+    context.webkitImageSmoothingEnabled = false;
 
     // Draw CA
-    grid.DrawGrid(context)
+    grid.DrawGrid(context);
 
-    $('.rule-row').remove()
+    $(".rule-row").remove();
     Object.keys(grid.Rule).forEach(ruleKey => {
-        $('#rules-table').append(
-            $('<tr />', { class: 'rule-row' })
-                .append($('<td />', { text: ruleKey.replace(/,/g, '') }))
-                .append($('<td />', { text: grid.Rule[ruleKey]? '1': '0' }))
-        )
-    })
-  })
-})
+      $("#rules-table").append(
+        $("<tr />", { class: "rule-row" })
+          .append($("<td />", { text: ruleKey.replace(/,/g, "") }))
+          .append($("<td />", { text: grid.Rule[ruleKey] ? "1" : "0" }))
+      );
+    });
+  });
+});

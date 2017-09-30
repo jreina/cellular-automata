@@ -1,27 +1,31 @@
 ﻿// Construct a RowManager instance with the specified number of cells.
-function CAGrid(width, height, rule, intial, off, on) {
+function CAGrid(width, height, rule, initial, cellSize) {
+  const ca = new CellularAutomata(rule);
+  const rows = Array(height)
+    .fill(0)
+    .reduce(
+      (memo, value) => {
+        const a = memo.concat([ca.EvolveRow(memo[memo.length - 1])]);
+        return a;
+      },
+      [initial]
+    );
+  const draw = function(context) {
+    rows.forEach((row, rowIndex) => {
+      row.forEach((cell, cellIndex) => {
+        if (cell === 1)
+          context.fillRect(
+            cellIndex * cellSize,
+            (rowIndex - 1) * cellSize,
+            cellSize,
+            cellSize
+          );
+      });
+    });
+  };
+  this.Rule = ca.RuleSet();
 
-  const ca = new CellularAutomata(rule)
-  
-  const initial = Array(width).fill(0)
-  intial.forEach(val => { if (val > -1 && val < width) initial[val] = 1 })
-
-  let currentRow = initial
-  let draw = function (context) {
-    let rowIndex = 1
-    while (rowIndex < height) {
-      let newRow = ca.EvolveRow(currentRow)
-      newRow.forEach((cell, index, row) => {
-        if (cell === 1) context.fillRect(index, (rowIndex - 1) * 2, 1, 2)
-      })
-      currentRow = newRow
-      rowIndex++
-    }
-  }
-  
-  this.Rule = ca.RuleSet()
-
-  this.DrawGrid = function (context) {
-    draw(context)
-  }
+  this.DrawGrid = function(context) {
+    draw(context);
+  };
 }

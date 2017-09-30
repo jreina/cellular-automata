@@ -1,19 +1,21 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head prefix="og: http://ogp.me/ns#">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:url" content="http://ca.johnnyreina.com" />
     <meta property="og:title" content="Cellular Automaton Sandbox" />
     <meta property="og:image" content="http://ca.johnnyreina.com/Content/Images/FB_Share.png" />
-    <meta property="og:description" content="Generate cellular automata right in your browser!"/>
-    <meta property="fb:app_id" content="653711414829284"/>
+    <meta property="og:description" content="Generate cellular automata right in your browser!" />
+    <meta property="fb:app_id" content="653711414829284" />
     <title>Cellular Automaton Sandbox</title>
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
     <link rel="stylesheet" href="css/site.css" />
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <script src="js/jquery-3.2.1.min.js"></script>
 </head>
+
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -33,62 +35,66 @@
         </div>
     </div>
     <div class="container">
-    <div class="col-md-12">
-        <form class="form" id="ca-configurator">
-            <div class="panel panel-default">
-                <div class="panel-heading"><strong>CA Configurator</strong></div>
-                <div class="panel-body">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="on">"On" Color</label>
-                            <input class="form-control" id="on" type="text" value="#fff" />
+        <div class="col-md-12">
+            <form class="form" id="ca-configurator">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><strong>CA Configurator</strong></div>
+                    <div class="panel-body">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="on">"On" Color</label>
+                                <input class="form-control" id="on" type="text" value="#fff" />
+                            </div>
+                            <div class="form-group">
+                                <label for="off">"Off" Color</label>
+                                <input class="form-control" id="off" type="text" value="#3276b1" />
+                            </div>
+                            <div class="form-group">
+                                <label for="rule">Rule</label>
+                                <input class="form-control" id="rule" type="number" value="110" min="1" max="256" />
+                            </div>
+                            <div class="form-group">
+                                <label for="cellsize">Cell Size (pixels)</label>
+                                <input class="form-control" id="cellsize" type="number" value="10" min="1" />
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="off">"Off" Color</label>
-                            <input class="form-control" id="off" type="text" value="#3276b1" />
-                        </div>
-                        <div class="form-group">
-                            <label for="rule">Rule</label>
-                            <input class="form-control" id="rule" type="number" value="18" min="1" max="256" />
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="width">Width</label>
-                            <input class="form-control" id="width" type="number" value="514" />
-                        </div>
-                        <div class="form-group">
-                            <label for="generations">Generation Count</label>
-                            <input class="form-control" id="generations" type="number" value="512" />
-                        </div>
-                        <div class="form-group">
-                            <label for="initial">Initial Conditions
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="cawidth">Width</label>
+                                <input class="form-control" id="cawidth" type="number" value="100" />
+                            </div>
+                            <div class="form-group">
+                                <label for="generations">Generation Count</label>
+                                <input class="form-control" id="generations" type="number" value="250" />
+                            </div>
+                            <div class="form-group">
+                                <label for="initial">Initial Conditions
                             <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="A comma-separated list of cell numbers to intially set to on. Uses a zero-based index. Use .. for ranges. E.g. 0..199 fills in the first 200 cells."></span>
                             </label>
-                            <input class="form-control" id="initial" type="text" value="256" />
+                                <input class="form-control" id="initial" type="text" value="99" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <table class="table table-hover" id="rules-table">
+                                <tr>
+                                    <th>Pattern</th>
+                                    <th>New State</th>
+                                </tr>
+                            </table>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <table class="table table-hover" id="rules-table">
-                            <tr>
-                                <th>Pattern</th>
-                                <th>New State</th>
-                            </tr>
-                        </table>
+                    <div class="panel-footer">
+                        <button class="btn btn-primary" type="submit">Generate</button>
                     </div>
                 </div>
-                <div class="panel-footer">
-                    <button class="btn btn-primary" type="submit">Generate</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
-<canvas id="sim-canvas"></canvas>
-<script src="js/cellular-automata-utils.js"></script>
-<script src="js/cellular-automata.js"></script>
-<script src="js/cellular-automata-grid.js"></script>
-<script src="js/app.js"></script>
+    <canvas id="sim-canvas"></canvas>
+    <script src="js/cellular-automata-utils.js"></script>
+    <script src="js/cellular-automata.js"></script>
+    <script src="js/cellular-automata-grid.js"></script>
+    <script src="js/app.js"></script>
     <div class="container">
         <hr />
         <footer>
@@ -97,4 +103,5 @@
         </footer>
     </div>
 </body>
+
 </html>
