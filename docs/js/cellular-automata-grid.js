@@ -10,13 +10,13 @@ function CAGrid(width, height, rule, initial, cellSize) {
       },
       [initial]
     );
-  const draw = function(context) {
+  const _draw = function(context) {
     rows.forEach((row, rowIndex) => {
       row.forEach((cell, cellIndex) => {
         if (cell === 1)
           context.fillRect(
             cellIndex * cellSize,
-            (rowIndex - 1) * cellSize,
+            rowIndex * cellSize,
             cellSize,
             cellSize
           );
@@ -25,7 +25,5 @@ function CAGrid(width, height, rule, initial, cellSize) {
   };
   this.Rule = ca.RuleSet();
 
-  this.DrawGrid = function(context) {
-    draw(context);
-  };
+  this.DrawGrid = _draw;
 }
