@@ -41,7 +41,7 @@
 
   $("#ca-configurator").on("submit", function(event) {
     event.preventDefault();
-    let {
+    const {
       on,
       off,
       rule,
@@ -50,24 +50,24 @@
       initial,
       cellsize
     } = event.target;
-    let onColor = on.value;
-    let offColor = off.value;
+    const onColor = on.value;
+    const offColor = off.value;
     const ruleNum = Number.parseInt(rule.value);
-    const width = Number.parseInt(cawidth.value);
-    const height = Number.parseInt(generations.value);
     const cellSize = Number.parseInt(cellsize.value);
+    const width = Number.parseInt(cawidth.value) * cellSize;
+    const height = Number.parseInt(generations.value) * cellSize;
     const initialState = mapInitialValues(width, initial.value);
     const grid = new CAGrid(width, height, ruleNum, initialState, cellSize);
 
-    let canvas = $("#sim-canvas");
-    let context = canvas.get(0).getContext("2d");
+    const canvas = $("#sim-canvas");
+    const context = canvas.get(0).getContext("2d");
 
     // Format canvas
-    canvas.attr({ height: height * cellSize, width: width * cellSize });
+    canvas.attr({ height, width });
 
     // Fill canvas with "off" color
     context.fillStyle = offColor;
-    context.fillRect(0, 0, width * cellSize, height * cellSize);
+    context.fillRect(0, 0, width, height);
 
     // Set canvas "on" color
     context.fillStyle = onColor;
@@ -77,6 +77,7 @@
     grid.DrawGrid(context);
 
     $(".rule-row").remove();
+
     Object.keys(grid.Rule).forEach(ruleKey => {
       $("#rules-table").append(
         $("<tr />", { class: "rule-row" })
