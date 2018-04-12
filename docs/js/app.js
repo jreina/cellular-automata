@@ -14,7 +14,7 @@
       // ['0..10','100..150']
       .map(range => range.split(".."))
       // [['0','10'],['100','150']]
-      .map(range => range.map(Number.parseInt))
+      .map(range => range.map(str => Number.parseInt(str, 10)))
       // [[0,10],[100,150]]
       .map(range => {
         const [start, end] = range;
