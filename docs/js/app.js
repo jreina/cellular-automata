@@ -12,7 +12,7 @@
   const getRangeIndices = rangeString =>
     rangeString
       // ['0..10','100..150']
-      .map(range => range.split(".."))
+      .map(range => range.split('..'))
       // [['0','10'],['100','150']]
       .map(range => range.map(str => Number.parseInt(str, 10)))
       // [[0,10],[100,150]]
@@ -23,14 +23,15 @@
           .fill(0)
           .map((v, index) => index)
           .map(value => value + start);
-      });
+      })
+      .reduce((memo, val) => memo.concat(val), []);
   const setInitialValues = arr => indices =>
     arr.map(value => (indices.includes(value) ? 1 : 0));
   const mapInitialValues = (width, inputString) => {
-    const ivArray = inputString.split(",");
-    const [singles, ranges] = bucket(ivArray)(val => val.indexOf("..") === -1);
+    const ivArray = inputString.split(',');
+    const [singles, ranges] = bucket(ivArray)(val => val.indexOf('..') === -1);
     const rangeCells = getRangeIndices(ranges);
-    const singleCells = singles.map(Number.parseInt);
+    const singleCells = singles.map(str => Number.parseInt(str, 10));
     const ivs = rangeCells.concat(singleCells);
     const numberedAr = Array(width)
       .fill(0)
@@ -39,7 +40,7 @@
     return initial;
   };
 
-  $("#ca-configurator").on("submit", function(event) {
+  $('#ca-configurator').on('submit', function(event) {
     event.preventDefault();
     const {
       on,
@@ -59,8 +60,8 @@
     const initialState = mapInitialValues(width, initial.value);
     const grid = new CAGrid(width, height, ruleNum, initialState, cellSize);
 
-    const canvas = $("#sim-canvas");
-    const context = canvas.get(0).getContext("2d");
+    const canvas = $('#sim-canvas');
+    const context = canvas.get(0).getContext('2d');
 
     // Format canvas
     canvas.attr({ height, width });
@@ -76,13 +77,13 @@
     // Draw CA
     grid.DrawGrid(context);
 
-    $(".rule-row").remove();
+    $('.rule-row').remove();
 
     Object.keys(grid.Rule).forEach(ruleKey => {
-      $("#rules-table").append(
-        $("<tr />", { class: "rule-row" })
-          .append($("<td />", { text: ruleKey.replace(/,/g, "") }))
-          .append($("<td />", { text: grid.Rule[ruleKey] ? "1" : "0" }))
+      $('#rules-table').append(
+        $('<tr />', { class: 'rule-row' })
+          .append($('<td />', { text: ruleKey.replace(/,/g, '') }))
+          .append($('<td />', { text: grid.Rule[ruleKey] ? '1' : '0' }))
       );
     });
   });
