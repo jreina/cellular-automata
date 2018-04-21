@@ -1,5 +1,9 @@
-﻿$(function() {
-  const bucket = arr => discriminator =>
+﻿Array.prototype.flatten = function() {
+  return this.reduce((memo, val) => memo.concat(val), []);
+};
+
+$(function() {
+  const partition = arr => discriminator =>
     arr.reduce(
       (memo, val) => {
         if (discriminator(val)) memo[0].push(val);
@@ -9,6 +13,21 @@
       },
       [[], []]
     );
+
+  /**
+   * Create a set of numbers in the given range
+   * @param {number} start
+   * @param {number} end
+   */
+  const range = (start, end) =>
+    Array(end - start)
+      .fill(0)
+      .map((v, index) => index + start);
+
+  /**
+   *
+   * @param {string} rangeString
+   */
   const getRangeIndices = rangeString =>
     rangeString
       // ['0..10','100..150']
@@ -16,20 +35,18 @@
       // [['0','10'],['100','150']]
       .map(range => range.map(str => Number.parseInt(str, 10)))
       // [[0,10],[100,150]]
-      .map(range => {
-        const [start, end] = range;
-        const length = end - start;
-        return Array(length)
-          .fill(0)
-          .map((v, index) => index)
-          .map(value => value + start);
-      })
-      .reduce((memo, val) => memo.concat(val), []);
-  const setInitialValues = arr => indices =>
-    arr.map(value => (indices.includes(value) ? 1 : 0));
+      .map(([start, end]) => range(start, end))
+      .flatten();
+
+  const setInitialValues = (/** @type {Array.<number>} */ arr) => (
+    /** @type {Array.<number>} */ indices
+  ) => arr.map(value => (indices.includes(value) ? 1 : 0));
+
   const mapInitialValues = (width, inputString) => {
     const ivArray = inputString.split(',');
-    const [singles, ranges] = bucket(ivArray)(val => val.indexOf('..') === -1);
+    const [singles, ranges] = partition(ivArray)(
+      val => val.indexOf('..') === -1
+    );
     const rangeCells = getRangeIndices(ranges);
     const singleCells = singles.map(str => Number.parseInt(str, 10));
     const ivs = rangeCells.concat(singleCells);
@@ -75,7 +92,7 @@
     context.webkitImageSmoothingEnabled = false;
 
     // Draw CA
-    grid.DrawGrid(context);
+    grid.Draw(context);
 
     $('.rule-row').remove();
 
