@@ -3,6 +3,8 @@
 };
 
 $(function() {
+  $('[data-toggle="tooltip"]').tooltip();
+
   const partition = arr => discriminator =>
     arr.reduce(
       (memo, val) => {

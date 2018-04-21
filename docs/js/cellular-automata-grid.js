@@ -12,17 +12,15 @@ function CAGrid(width, height, rule, initial, cellSize, context) {
     for (let row = 0; row < height + 1; row++) {
       for (let col = 0; col < width + 1; col++) {
         let currCell = currRow[col];
-        if (currCell === 1)
-          setTimeout(
-            () =>
-              context.fillRect(
-                row * cellSize,
-                col * cellSize,
-                cellSize,
-                cellSize
-              ),
-            Math.floor(Math.random() * delay)
-          );
+        if (currCell)
+          setTimeout(() => {
+            context.fillRect(
+              row * cellSize,
+              col * cellSize,
+              cellSize,
+              cellSize
+            );
+          }, Math.floor(Math.random() * delay));
       }
       currRow = ca.EvolveRow(currRow);
     }
