@@ -66,7 +66,8 @@ $(function() {
       cawidth,
       generations,
       initial,
-      cellsize
+      cellsize,
+      delay: pixelDelay
     } = event.target;
     const onColor = on.value;
     const offColor = off.value;
@@ -74,6 +75,7 @@ $(function() {
     const cellSize = Number.parseInt(cellsize.value);
     const width = Number.parseInt(cawidth.value) * cellSize;
     const height = Number.parseInt(generations.value) * cellSize;
+    const delay = Number.parseInt(pixelDelay.value);
     const initialState = mapInitialValues(width, initial.value);
     const grid = new CAGrid(width, height, ruleNum, initialState, cellSize);
 
@@ -81,18 +83,18 @@ $(function() {
     const context = canvas.get(0).getContext('2d');
 
     // Format canvas
-    canvas.attr({ height, width });
+    canvas.attr({ height: width, width: height });
 
     // Fill canvas with "off" color
     context.fillStyle = offColor;
-    context.fillRect(0, 0, width, height);
+    context.fillRect(0, 0, height, width);
 
     // Set canvas "on" color
     context.fillStyle = onColor;
     context.webkitImageSmoothingEnabled = false;
 
     // Draw CA
-    grid.Draw(context);
+    grid.Draw(context, delay);
 
     $('.rule-row').remove();
 

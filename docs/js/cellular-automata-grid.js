@@ -2,7 +2,12 @@
 function CAGrid(width, height, rule, initial, cellSize, context) {
   const ca = new CellularAutomata(rule);
 
-  this.Draw = context => {
+  /**
+   *
+   * @param {CanvasRenderingContext2D} context
+   * @param {number} delay
+   */
+  this.Draw = (context, delay) => {
     let currRow = initial;
     for (let row = 0; row < height + 1; row++) {
       for (let col = 0; col < width + 1; col++) {
@@ -11,12 +16,12 @@ function CAGrid(width, height, rule, initial, cellSize, context) {
           setTimeout(
             () =>
               context.fillRect(
-                col * cellSize,
                 row * cellSize,
+                col * cellSize,
                 cellSize,
                 cellSize
               ),
-            Math.floor(Math.random() * 1500)
+            Math.floor(Math.random() * delay)
           );
       }
       currRow = ca.EvolveRow(currRow);
